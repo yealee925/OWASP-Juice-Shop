@@ -4,7 +4,7 @@
 The OWASP Juice Shop project aimed to provide knowledge on identifying and exploiting common web application vulnerabilities. Some of the vulnerabilities included in this project were SQL Injection, Broken Authentication, and XSS Scripting. 
 
 ### Skills Learned
-- Enhanced knowledge of vulnerabilities included in OWASP Top 10 vulnerabilities of 2021
+- Enhanced knowledge of vulnerabilities included in OWASP Top 10 web app vulnerabilities of 2021
 - Advanced understanding of Burp Suite and practical application
 - Development of critical thinking and problem-solving skills in cybersecurity.
 
