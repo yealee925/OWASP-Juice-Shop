@@ -1,19 +1,15 @@
 # OWASP-Juice-Shop
 
 ## Objective
-The Detection Lab project aimed to establish a controlled environment for simulating and detecting cyber attacks. The primary focus was to ingest and analyze logs within a Security Information and Event Management (SIEM) system, generating test telemetry to mimic real-world attack scenarios. This hands-on experience was designed to deepen understanding of network security, attack patterns, and defensive strategies.
+The OWASP Juice Shop project aimed to provide knowledge on identifying and exploiting common web application vulnerabilities. Some of the vulnerabilities included in this project were SQL Injection, Broken Authentication, and XSS Scripting. 
 
 ### Skills Learned
--
-
-- Advanced understanding of SIEM concepts and practical application.
-- Proficiency in analyzing and interpreting network logs.
-- Ability to generate and recognize attack signatures and patterns.
-- Enhanced knowledge of network protocols and security vulnerabilities.
+- Enhanced knowledge of vulnerabilities included in OWASP Top 10 vulnerabilities of 2021
+- Advanced understanding of Burp Suite and practical application
 - Development of critical thinking and problem-solving skills in cybersecurity.
 
 ### Tools Used
-- Burp Suite to intercept and 
+- Burp Suite to intercept and manipulate request packages 
 
 ## Setup Burp Suite
 1. If not already installed, download Burp Suite and the extension to configure the web browser to redirect traffic through Burp Suite. In this case, we will be using the Firefox browser, so ensure the FoxyProxy extension is installed
@@ -41,7 +37,7 @@ Note: If you want to stop your browser from being intercepted and to be able to 
 1. Open the Firefox browser and input the target system's IP address (10.10.5.171) into the address bar, which will take you to the OWASP Juice Shop site
 
    ![image](https://github.com/user-attachments/assets/bb7d126c-646d-4fda-9f26-e19a5fcdd27c)
-2. Select products and click on Reviews which will show the user's email address. For instance, the admin's email address can easily be found (admin@juice-sh.op) as they had left reviews
+2. Select products and click on Reviews which will show the user's email address. For instance, the admin's email address can easily be found (admin@juice-sh.op)
 
    ![image](https://github.com/user-attachments/assets/e385a222-407b-4b78-b204-710a358ec74f)
 3. Another email to keep note of can be found under the Green Smoothie (jim@juice-sh.op). Through a simple Google search ("replicator"), the reference they are referring to is shown to be from Star Trek 
@@ -69,14 +65,14 @@ Note: If you want to stop your browser from being intercepted and to be able to 
 3. Switch back to the Firefox browser and see that you successfully logged into the admin account, then logout
 
    ![image](https://github.com/user-attachments/assets/65cbeb47-3e40-416b-acf4-cbc40beb6d99)
-4. Now we'll try to log into the admin account with the admin's email. We still don't know the password so we'll use SQL injection to login. Ensure that Burp Suite & FoxyProxy are both enabled. Login by inputting **admin@juice-sh.op** in the email bar and put random letters into the password then select Enter. Switch over to Burp Suite and Foward the packet
+4. Now we'll try to log into the admin account with the admin's email. We still don't know the password so we'll use SQL injection to login. Ensure that Burp Suite & FoxyProxy are both enabled. Login by inputting **admin@juice-sh.op** in the email bar and putting random letters into the password then select Enter. Switch over to Burp Suite and select Foward to forward the packet
      
    ![image](https://github.com/user-attachments/assets/40bf235c-e18a-4455-ab5e-884a65cbc5cd)
    ![image](https://github.com/user-attachments/assets/3fb68c1a-074b-4ad4-b748-98576d67c362)
 5. Edit the email to: admin@juice-sh.op'--
 
    ![image](https://github.com/user-attachments/assets/6cede4c0-a951-4064-9ad1-f6404401f5a4)
-   - The email address is valid, so don't need to include 1=1 as the email is already true (so 1=1 can be used when the email/username are not known)
+   - The email address is valid, so don't need to include 1=1 as the email is already true (so 1=1 can be used when the email/username is not known)
 6. Switch over to the Firefox browser to see that login was successful, then logout
    
    ![image](https://github.com/user-attachments/assets/a05b5d00-461f-4d26-802e-d62aac3f71a4)
@@ -106,13 +102,83 @@ Note: If you want to stop your browser from being intercepted and to be able to 
 
     ![image](https://github.com/user-attachments/assets/aa9e3dc3-910c-44f6-806f-10a0c861e87e)
     - A status code of 200 is a successful request (which means it's the password) and a status code of 401 means a failed request
-13. Close the window and Discard the attack since the password has been found. Switch over to the Firefox browser and login using the credentials that were found
+13. Close the window and Discard the attack since the password has been found. Switch over to the Firefox browser and login using the credentials that were found, then logout once it's successful
 
     ![image](https://github.com/user-attachments/assets/772fbd48-80be-4fcb-99a5-dd230d07b004)
-14. In a previous task there was a review with an email address of jim@juice-sh.op
+14. In a previous task there was a review with an email address of jim@juice-sh.op. We will be exploiting the reset password mechanism using this account. At the login page, select Forgot your password. Input the email to see the security question
 
+    ![image](https://github.com/user-attachments/assets/7b6b3430-b530-4945-9fb5-f305f3b8f130)
+15. Remember the account made a reference to Star Trek, so with a hunch research "Jim Star Trek" and find the middle name of Jim's brother
 
+![image](https://github.com/user-attachments/assets/b4c40416-cfc4-4834-acf5-09bff32cb605)
+    ![image](https://github.com/user-attachments/assets/2b030ed5-04ca-4eb5-bab3-4394507bd262)
+- The brother's name is found to be Samuel
+
+17. Input the answer and insert whatever password you want. The password has successfully been changed
+
+    ![image](https://github.com/user-attachments/assets/578d1c93-5401-48fb-bb96-72e99553635b)
 
 ## [C] Broken Access Control Steps
+17. Open the Application menu and select the Web Developers Tool under More tools
+
+    ![image](https://github.com/user-attachments/assets/8d6f0b4b-0042-49a9-aabd-31e968716537)
+18. A window will open at the bottom and select Debugger. In this section, select main-es2015.js on the left side of the window and click the { } button at the bottom which will make the file a readable format
+
+    ![image](https://github.com/user-attachments/assets/27f37316-2211-4bd9-a708-b3ebdf34d75a)
+19. Crtl+f to search for the key word "admin". Specifically looking for "path: 'administration'". The path suggests there's an admin page (/#/administration) which is indicated by the path: 'about' that can be seen which is a page that we can access on the website
+
+    ![image](https://github.com/user-attachments/assets/56e13ce7-2144-4946-aeec-6060d5975c04)
+    ![image](https://github.com/user-attachments/assets/d63a5f71-2efa-49ae-a4ad-b38f225c8abc)
+20. However, the page isn't accessible so log into the admin's account to view the page. So once logged in, change the URL to end with **/#/administration**
+    
+    ![image](https://github.com/user-attachments/assets/2653786b-07f9-4394-98fb-749a08c5688c)
+
+21. To view another user's shopping cart, enable Burp Suite and FoxyProxy to capture the request then select Your Basket while still logged into the admin's account. May have to Forward the request
+
+    ![image](https://github.com/user-attachments/assets/acdd185e-09d8-4b52-a9a5-fcf969d32c11)
+22. Focus on the first line of the captured request and change the 1 to a 2 after basket/. Then forward the request to see what's in another user's basket. Can continue changing the # to see other users' baskets
+
+    ![image](https://github.com/user-attachments/assets/e2a57ce1-6ad0-4dcf-81c4-99240af4bdd2)
+    ![image](https://github.com/user-attachments/assets/9017c9da-d324-4e8e-a3c0-d33a08bc4d4d)
+
+    ![image](https://github.com/user-attachments/assets/e65ea450-4722-4ee9-a4b4-34eff7d124ce)
 
 ## [D] Cross-Site Scripting XSS Steps
+23. Perform a DOM XSS by using an iframe element with a javascript alert tag: *<iframe src="javascript:alert(`xss`)">*. In the search bar input the iframe element and click Enter. This will trigger an alert which means the XSS was successful
+
+    ![image](https://github.com/user-attachments/assets/d56ee332-bc3f-44c6-9d7f-800dc33db34d)
+24. Perform a persistent XSS by first being in the admin's account and navigating to the Last Login IP page. This page logs the last login IP and by logging out it will log it as the last login IP. We want to capture this logout request so ensure that Burp Suite and FoxyProxy are enabled, then logout
+
+    ![image](https://github.com/user-attachments/assets/38259b86-0b6c-43d3-9a4d-33896b327d98)
+
+25. Switch to Burp Suite and on the right side, select the Request headers section and click + to add a new header with the following info:
+    - Name: True-Client-IP
+    - Value: <iframe src="javascript:alert(`xss`)">
+    
+    ![image](https://github.com/user-attachments/assets/63aecdc6-cf0e-4c35-beca-d103339221de)
+    ![image](https://github.com/user-attachments/assets/1eaf8733-643c-4cd4-915c-85399ff138a8)
+26. Select add after inputting the information and this will add a new line to the bottom of the request, then Forward the request
+27. Log back into the admin's account and when you navigate back to the Last Login IP page there will be an XSS alert
+
+    ![image](https://github.com/user-attachments/assets/a0e115bd-0fba-4751-89bb-5eec74619246)
+28. Perform a reflected XSS by being in the admin's account and navigating to the Order History page
+
+    ![image](https://github.com/user-attachments/assets/22faef03-887d-4446-a05b-afc1055a56e3)
+29. On the Order History page, select the truck icon that will take you to a Track Result page
+
+    ![image](https://github.com/user-attachments/assets/266aaabf-661c-4cc0-a6d5-829c103f38da)
+30. The URL for the Track Result page includes an id paired with the order. Replace the id (5267-7b7094727a898a71) on the URL with *<iframe src="javascript:alert(`xss`)">*
+
+    ![image](https://github.com/user-attachments/assets/dd8cf311-99f2-4bf7-9ac2-4af88a849856)
+    ![image](https://github.com/user-attachments/assets/0c6acc0a-85dd-429d-8bb9-2293c60bd69b)
+31. Click Enter on the URL and refresh the page to receive an alert that the XSS was successful
+
+    ![image](https://github.com/user-attachments/assets/8eea2746-ebf2-4424-8b81-f63b5b52ffdf)
+
+
+
+
+
+
+
+
